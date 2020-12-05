@@ -91,16 +91,21 @@
 <script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="config.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="app1.js"></script>
 <div>
-<h2> &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  Happiness World Map</h2>
-  <select id="ddlViewBy">
-    <option value="2019.csv" selected="selected">2019</option>
-    <option value="2018.csv" >2018</option>
-    <option value="2017.csv">2017</option>
-    <option value="2016.csv">2016</option>
-    <option value="2015.csv">2015</option>
-    <input type="button" id="theButton" value="Click me to see spicific year">
+<h2>  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  Happiness World Map</h2>
+  <select  class="btn btn-secondary dropdown-toggle"  id="ddlViewBy" >
+    <div class="dropdown-menu dropdown-menu-right">
+    <option   class="dropdown-item" value="2019.csv" selected="selected">2019</option>
+    <option  class="dropdown-item" value="2018.csv" >2018</option>
+    <option  class="dropdown-item" value="2017.csv">2017</option>
+    <option   class="dropdown-item"value="2016.csv">2016</option>
+    <option   class="dropdown-item"value="2015.csv">2015</option>
+    <input type="button" class="btn btn-primary" id="theButton" value="Click me to see spicific year">
+    </div>
   </select>
   
 </div>
@@ -116,7 +121,6 @@ var tip = d3.tip()
             .html(function(d) {
               return "<strong>Country: </strong><span class='details'>" + d.properties.name + "<br></span>" + "<strong>Population: </strong><span class='details'>" + format(d.population) +"</span>"
               +"<br></span>" + "<strong>HappinessScore: </strong><span class='details'>" + format(d.score) +"</span>"
-              
               ;
             })
 
@@ -242,57 +246,6 @@ function ready(error, data, population,happiness) {
       .datum(topojson.mesh(data.features, function(a, b) { return a.id !== b.id; }))
       .attr("class", "names")
       .attr("d", path);
-
-
-  // Draw legend
-
-var map = L.map('map')
-var legend = L.control({position: 'bottomright'});
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [500000, 1500000, 2000000,  2500000  , 3000000, 3500000 ],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-    return div;
-};
-
-legend.addTo(map);
-
-
-var legend = L.control({position: 'bottomright'});
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
- attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
- maxZoom: 18,
- id: 'mapbox/light-v9',
- tileSize: 512,
- zoomOffset: -1,
- accessToken: API_KEY,
-}).addTo(map);
-
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [500000, 1500000, 2000000,  2500000  , 3000000, 3500000 ],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
-
-legend.addTo(map);
 
 }
 
